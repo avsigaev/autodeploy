@@ -15,6 +15,10 @@ admin: {{ADMIN_ADDRESS}}
 # This option is required.
 master: {{MASTER_ADDRESS}}
 # NAT punching settings.
+blockchain:
+  endpoint: https://rinkeby.infura.io/00iTrs5PIy0uGODwcsrb
+  sidechain_endpoint: https://sidechain-dev.sonm.com
+  contract_registry: 0xaf1ffd7f652be7e9a0854a42b2d3046f853f80f1
 npp:
   rendezvous:
     endpoints:
@@ -52,7 +56,7 @@ logging:
   level: debug
 
 store:
-  path: "{{WORKER_STORE_PATH}}"
+  endpoint: "{{WORKER_STORE_PATH}}"
 
 benchmarks:
   # URL to download benchmark list, use `file://` schema to load file from a filesystem.
