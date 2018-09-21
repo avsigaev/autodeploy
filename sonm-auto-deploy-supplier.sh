@@ -111,6 +111,7 @@ modify_config() {
         replaces=$replaces'gsub("\{\{'$var'\}\}","'${value}'");'
     done
     replaces=$replaces"print}"
+    echo "replaces="$replaces
     escaped_template_path=$(echo ${template} | sed 's/ /\\ /g')
     eval awk '${replaces}' "${escaped_template_path}" >$2
 }
