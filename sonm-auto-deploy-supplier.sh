@@ -52,7 +52,7 @@ install_dependencies() {
     apt-get update
     apt-get install -y gnupg apt-transport-https gawk
 
-    declare -a deps=("jq" "curl" "wget")
+    declare -a deps=("jq" "curl" "wget" "expect")
     for dep in "${deps[@]}"
     do
         if ! [ $(which $dep) ]; then
@@ -60,7 +60,7 @@ install_dependencies() {
         fi
     done
     if [ -n "$to_install" ]; then
-        apt-get install -y ${to_install}
+        apt-get install -y --no-install-recommends ${to_install}
     fi
 }
 
@@ -167,6 +167,13 @@ set_up_cli() {
     chown -R ${actual_user}:${actual_user} ${KEYSTORE}
     chown -R ${actual_user}:${actual_user} ${actual_user_home}/.sonm
     su - ${actual_user} -c "sonmcli login"
+    expect -c '
+    set timeout -1
+    spawn su - ${actual_user} -c "sonmcli login"
+    match_max 100000
+    expect "Key passphrase: "
+    send -- "11111111\r"
+    expect eof'
     sleep 1
     ADMIN_ADDRESS=$(su - ${actual_user} -c "sonmcli login | grep 'Default key:' | cut -c14-56" | tr -d '\r')
     chmod -R 755 ${KEYSTORE}/*
